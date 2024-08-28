@@ -23,6 +23,7 @@ $page = strtr(
         'resources' => 'Buildings',
         'resourceSettings' => 'Resources',
         'station' => 'Buildings',
+		'lfbuildings' => 'Buildings',
         'federationlayer' => 'Federation',
         'shortcuts' => 'Fleetshortcuts',
         'forums' => 'Forum',

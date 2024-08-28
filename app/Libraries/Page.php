@@ -636,6 +636,7 @@ class Page
         $pages = [
             ['overview', $lang->line('lm_overview'), '', 'FFF', '', '1', '1', 'overview', '7', ''],
             ['resources', $lang->line('lm_resources'), '', 'FFF', '', '1', '3', 'resources', '0', ''],
+			['lfbuildings', $lang->line('lm_lifeform'), '', 'FFF', '', '1', '3', 'lifeform', '8', ''],
             ['station', $lang->line('lm_station'), '', 'FFF', '', '1', '3', 'station', '', ''],
             ['traderOverview', $lang->line('lm_trader'), '', 'FF8900', '', '1', '5', 'traderOverview', '4', 'true'],
             ['research', $lang->line('lm_research'), '', 'FFF', '', '1', '6', 'research', '1', ''],
@@ -659,6 +660,7 @@ class Page
             ['shop#page=inventory&category=d8d49c315fa620d9c7f1f19963970dea59a0e3be', $lang->line('lm_inventory'), '', 'FFF', '', '1', '9', ''],
             ['rewarding&tab=rewards&tier=1', $lang->line('lm_current_rank'), '', 'FFF', '', '1', '9', ''],
             ['rewards', '', '', 'FFF', '', '1', '9', ''],
+			['lfresearch', $lang->line('lm_lifeform_research'), '', 'FFF', '', '1', '9', ''],
             //['station', $lang->line('tech')[43], '', 'FFF', '', '1', '9', ''], //Muelle espacial
         ];
 

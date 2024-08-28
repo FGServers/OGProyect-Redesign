@@ -61,7 +61,7 @@
         <div id="darkmatter_box" class="darkmatter  tooltipHTML resource"
             title="Materia Oscura|&lt;table class=&quot;resourceTooltip&quot;&gt;&lt;tr&gt;&lt;th&gt;Disponible:&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;&quot;&gt;25.000&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;th&gt;Comprada&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;&quot;&gt;0&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;th&gt;Encontrada&lt;/th&gt;&lt;td&gt;&lt;span class=&quot;&quot;&gt;25.000&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
             data-tooltip-button="Comprar Materia Oscura">
-            <a href="https://s145-ar.ogame.gameforge.com/game/index.php?page=payment" class="overlay">
+            <a href="game.php?page=payment" class="overlay">
                 <img src="{{ $img_path . 'layout/ressourcen_DM.gif' }}">
                 <div class="resourceIcon darkmatter"></div>
             </a>

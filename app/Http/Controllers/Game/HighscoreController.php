@@ -9,7 +9,7 @@ use App\Libraries\TimingLibrary as Timing;
 use App\Libraries\Users;
 use App\Models\Game\Statistics;
 
-class StatisticsController extends BaseController
+class HighscoreController extends BaseController
 {
     public const MODULE_ID = 16;
 

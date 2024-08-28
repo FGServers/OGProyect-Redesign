@@ -22,4 +22,17 @@ $lang = [
     'building_phalanx' => 'Sensor Phalanx',
     'building_jump_gate' => 'Salto cuántico',
     'building_missile_silo' => 'Silo',
+
+	'building_lifeform_tech11101' => 'Sector Residencial',
+	'building_lifeform_tech11102' => 'Granja Biosférica',
+	'building_lifeform_tech11103' => 'Centro de Investigación',
+	'building_lifeform_tech11104' => 'Academia de las ciencias',
+	'building_lifeform_tech11105' => 'Centro de Neurocalibración',
+	'building_lifeform_tech11106' => 'Fundición de Alta Energía',
+	'building_lifeform_tech11107' => 'Silo de Alimentos',
+	'building_lifeform_tech11108' => 'Explotaión por fusión',
+	'building_lifeform_tech11109' => 'Rascacielos',
+	'building_lifeform_tech11110' => 'Laboratorio Biotecnológico',
+	'building_lifeform_tech11111' => 'Metrópolis',
+	'building_lifeform_tech11112' => 'Escudo Planetario',
 ];

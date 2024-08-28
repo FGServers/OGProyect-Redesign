@@ -247,21 +247,21 @@ class DevelopmentsLib
         $requeriments = Objects::getInstance()->getRelations();
 
         if (isset($requeriments[$element])) {
-            $enabled = true;
+            $enabled = 'on';
 
             foreach ($requeriments[$element] as $ReqElement => $EleLevel) {
                 if (isset($current_user[$resource[$ReqElement]]) && $current_user[$resource[$ReqElement]] >= $EleLevel) {
-                    $enabled = true;
+                    $enabled = 'on';
                 } elseif (isset($current_planet[$resource[$ReqElement]]) && $current_planet[$resource[$ReqElement]] >= $EleLevel) {
-                    $enabled = true;
+                    $enabled = 'on';
                 } else {
-                    return false;
+                    return 'disabled';
                 }
             }
 
             return $enabled;
         } else {
-            return true;
+            return 'on';
         }
     }
 

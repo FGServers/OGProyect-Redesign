@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Game;
 
 use App\Core\BaseController;
 use App\Core\Enumerators\BuildingsEnumerator;
+use App\Core\Enumerators\ObjectsClassesEnumerator as ObjectClass;
 use App\Helpers\UrlHelper;
 use App\Libraries\Buildings\Building;
 use App\Libraries\DevelopmentsLib as Developments;
@@ -130,6 +131,9 @@ class BuildingsController extends BaseController
          */
         $page = [];
         $page['list_of_buildings'] = $this->buildListOfBuildings();
+		$page['page_style'] = $this->getPageStyle();
+		$page['planet_header'] = $this->getPlanetHeader();
+		$page['options_slots'] = $this->getOptionsSlots();
 
         // display the page
         $this->page->display(
@@ -188,18 +192,37 @@ class BuildingsController extends BaseController
     private function setListOfBuildingsItem($building_id)
     {
         $item_to_parse = [];
+		$resource = $this->objects->getObjects();
 
         $item_to_parse['dpath'] = DPATH;
         $item_to_parse['i'] = $building_id;
-        $item_to_parse['nivel'] = $this->getBuildingLevelWithFormat($building_id);
-        $item_to_parse['n'] = $this->langs->language[$this->objects->getObjects()[$building_id]];
-        $item_to_parse['descriptions'] = $this->langs->language['descriptions'][$this->objects->getObjects()[$building_id]];
+		$item_to_parse['status'] = Developments::isDevelopmentAllowed($this->user, $this->planet, $building_id);
+        $item_to_parse['level'] = $this->getBuildingLevel($building_id);
+        $item_to_parse['name'] = $this->langs->language[$this->objects->getObjects()[$building_id]];
+        $item_to_parse['object_class'] = $this->getConstant($resource[$building_id]); //ObjectClass::building_metal_mine;
+		$item_to_parse['sprite'] = ($this->getCurrentPage() == 'lfbuildings') ? 'lifeformsprite' : 'sprite'; //ObjectClass::building_metal_mine;
+		$item_to_parse['size'] = $this->getItemSize($building_id);
         $item_to_parse['price'] = $this->getBuildingPriceWithFormat($building_id);
         $item_to_parse['time'] = $this->getBuildingTimeWithFormat($building_id);
-        $item_to_parse['click'] = $this->getActionButton($building_id);
+        $item_to_parse['button'] = $this->getActionButton($building_id);
 
         return $item_to_parse;
     }
+
+	private function getConstant($constant): string
+	{
+		return constant("App\Core\Enumerators\ObjectsClassesEnumerator::{$constant}");
+	}
+
+	private function getItemSize($item_id)
+	{
+		if($item_id >= 22 && $item_id <= 24)
+		{
+			return "small";
+		} else {
+			return "medium";
+		}
+	}
 
     /**
      * Expects a building ID to calculate and format the level
@@ -289,8 +312,6 @@ class BuildingsController extends BaseController
      */
     private function getActionButton($building_id)
     {
-        $build_url = 'game.php?page=' . $this->getCurrentPage() . '&cmd=insert&building=' . $building_id;
-
         // validations
         $is_development_payable = Developments::isDevelopmentPayable($this->user, $this->planet, $building_id, true, false);
         $is_on_vacations = $this->userLibrary->isOnVacations($this->user);
@@ -301,29 +322,29 @@ class BuildingsController extends BaseController
         // check fields
         if (!$have_fields) {
             // block all if we don't have any
-            return $this->buildButton('all_occupied');
+            return false;
         }
 
         // check if there's any work in progress
         if ($this->isWorkInProgress($building_id)) {
             // block some
-            return $this->buildButton('work_in_progress');
+            return false;
         }
 
         // check vacations
         if ($is_on_vacations) {
             // block all or some
-            return $this->buildButton('not_allowed');
+            return false;
         }
 
         // if a queue was already set
         if ($this->_commander_active) {
             if ($is_queue_full) {
-                return $this->buildButton('not_allowed');
+                return false;
             }
 
             if ($queue_element > 0) {
-                return UrlHelper::setUrl($build_url, $this->buildButton('allowed_for_queue'));
+                return '<button class="upgrade tooltip hideOthers js_hideTipOnMobile" aria-label="Expandir Mina de metal al nivel 6" data-technology="' . $building_id . '" data-is-spaceprovider="" data-tooltip-title="Expandir Mina de metal al nivel 6"></button>';
             }
         }
 
@@ -335,10 +356,10 @@ class BuildingsController extends BaseController
         }
 
         if (!$is_development_payable) {
-            return $this->buildButton('not_allowed');
+            return false;
         }
 
-        return UrlHelper::setUrl($build_url, $this->buildButton('allowed'));
+        return '<button class="upgrade tooltip hideOthers js_hideTipOnMobile" aria-label="Expandir Mina de metal al nivel 6" data-technology="' . $building_id . '" data-is-spaceprovider="" data-tooltip-title="Expandir Mina de metal al nivel 6"></button>';
     }
 
     /**
@@ -396,30 +417,6 @@ class BuildingsController extends BaseController
     }
 
     /**
-     * Get the properties for each button type
-     *
-     * @param string $button_code Button code
-     *
-     * @return string
-     */
-    private function buildButton($button_code)
-    {
-        $listOfButtons = [
-            'all_occupied' => ['color' => 'red', 'lang' => 'bd_no_more_fields'],
-            'allowed' => ['color' => 'green', 'lang' => 'bd_build'],
-            'not_allowed' => ['color' => 'red', 'lang' => 'bd_build'],
-            'allowed_for_queue' => ['color' => 'green', 'lang' => 'bd_add_to_list'],
-            'work_in_progress' => ['color' => 'red', 'lang' => 'bd_working'],
-        ];
-
-        $color = ucfirst($listOfButtons[$button_code]['color']);
-        $text = $this->langs->language[$listOfButtons[$button_code]['lang']];
-        $methodName = 'color' . $color;
-
-        return FormatLib::$methodName($text);
-    }
-
-    /**
      * Determine if there's any work in progress
      *
      * @param int $building_id Building ID
@@ -452,16 +449,86 @@ class BuildingsController extends BaseController
     {
         try {
             $get_value = filter_input(INPUT_GET, 'page');
-            $allowed_pages = ['resources', 'station'];
+            $allowed_pages = ['resources', 'station', 'lfbuildings'];
 
             if (in_array($get_value, $allowed_pages)) {
                 return $get_value;
             }
 
-            throw new Exception('"resources" and "station" are the valid options');
+            throw new Exception('"resources", "station" and "lfbuildings" are the valid options');
         } catch (Exception $e) {
             die('Caught exception: ' . $e->getMessage() . "\n");
         }
+    }
+
+	/**
+     * Determine the current page style
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    private function getPageStyle()
+    {
+        if($this->getCurrentPage() == 'resources')
+		{
+			return 'supplies';
+		} elseif($this->getCurrentPage() == 'lfbuildings') {
+			return 'lfbuildings';
+		} else {
+			return 'facilities';
+		}
+    }
+
+	/**
+     * Determine the current page style
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    private function getPlanetHeader()
+    {
+        if($this->getCurrentPage() == 'resources')
+		{
+			return '';
+		} elseif($this->getCurrentPage() == 'lfbuildings') {
+			return '';
+		} else {
+			return '';
+		}
+    }
+
+	/**
+     * Determine the current page style
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    private function getOptionsSlots()
+    {
+		$options = '';
+        if($this->getCurrentPage() == 'resources')
+		{
+			$options .= '<div id="slot01" class="slot">
+				<a href="game.php?page=resourceSettings">
+					' . $this->langs->language['bd_resources_settings'] . '
+				</a>
+			</div>';
+		} elseif($this->getCurrentPage() == 'lfbuildings') {
+			$options .= '<div id="slot01" class="slot">
+					<a href="game.php?page=lfsettings">
+						' . $this->langs->language['bd_lf_settings'] . '
+					</a>
+				</div>
+				<div id="slot02" class="slot lfSlot ipiHintable" style="overflow: visible; position: absolute;" data-ipi-hint="ipiToolbarLifeformresearch">
+					<a href="game.php?page=lfresearch">
+						' . $this->langs->language['bd_lf_development'] . '
+					</a>
+				</div>';
+		}
+		return $options;	
     }
 
     /**
@@ -474,25 +541,20 @@ class BuildingsController extends BaseController
     {
         $allowed_buildings = [
             'resources' => [
-                1 => [1, 2, 3, 4, 12, 22, 23, 24],
-                3 => [12, 22, 23, 24],
+                1 => [1, 2, 3, 4, 12, 212, 22, 23, 24],
+                3 => [1, 2, 3, 4, 12, 212, 22, 23, 24],
             ],
             'station' => [
-                1 => [14, 15, 21, 31, 33, 34, 36, 44],
+                1 => [14, 21, 31, 34, 44, 15, 33, 36],
+                3 => [14, 21, 41, 42, 43],
+            ],
+            'lfbuildings' => [
+                1 => [11101, 11102, 11103, 11104, 11105, 11106, 11107, 11108, 11109, 11110, 11111, 11112],
                 3 => [14, 21, 41, 42, 43],
             ],
         ];
 
-        return array_filter(
-            $allowed_buildings[$this->getCurrentPage()][$this->planet['planet_type']],
-            function ($value) {
-                return Developments::isDevelopmentAllowed(
-                    $this->user,
-                    $this->planet,
-                    $value
-                );
-            }
-        );
+		return $allowed_buildings[$this->getCurrentPage()][$this->planet['planet_type']];
     }
     /**
      * OLD METHODS BELOW

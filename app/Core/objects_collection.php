@@ -66,6 +66,19 @@ $resource = [
     604 => 'premium_officier_geologist',
     605 => 'premium_officier_technocrat',
 	610 => 'premium_officier_commanding',
+
+	11101 => 'building_lifeform_tech11101',
+	11102 => 'building_lifeform_tech11102',
+	11103 => 'building_lifeform_tech11103',
+	11104 => 'building_lifeform_tech11104',
+	11105 => 'building_lifeform_tech11105',
+	11106 => 'building_lifeform_tech11106',
+	11107 => 'building_lifeform_tech11107',
+	11108 => 'building_lifeform_tech11108',
+	11109 => 'building_lifeform_tech11109',
+	11110 => 'building_lifeform_tech11110',
+	11111 => 'building_lifeform_tech11111',
+	11112 => 'building_lifeform_tech11112',
 ];
 
 $requeriments = [
@@ -117,6 +130,16 @@ $requeriments = [
     408 => [21 => 6, 110 => 6],
     502 => [21 => 1, 44 => 2],
     503 => [21 => 1, 44 => 4, 117 => 1],
+	11103 => [11101 => 21, 11102 => 22],
+	11104 => [11101 => 41],
+	11105 => [11109 => 5],
+	11106 => [11103 => 5],
+	11107 => [11106 => 3],
+	11108 => [11104 => 1],
+	11109 => [11108 => 21],
+	11110 => [11108 => 2],
+	11111 => [11109 => 6, 11105 => 1],
+	11112 => [11105 => 5, 11107=> 4, 11108 => 5, 11111 => 5],
 ];
 
 $pricelist = [
@@ -185,6 +208,18 @@ $pricelist = [
     604 => ['darkmatter_week' => 12500, 'darkmatter_month' => 125000, 'img_big' => 'ogame_geologe', 'img_small' => 'geologe_ikon'],
     605 => ['darkmatter_week' => 10000, 'darkmatter_month' => 100000, 'img_big' => 'ogame_technokrat', 'img_small' => 'technokrat_ikon'],
 	610 => ['darkmatter_week' => 42500, 'darkmatter_month' => 425000, 'img_big' => 'ogame_commanding', 'img_small' => 'commanding_ikon'],
+	11101 => ['metal' => 7, 'crystal' => 2, 'deuterium' => 0, 'energy' => 0, 'factor' => 1.8],
+	11102 => ['metal' => 2, 'crystal' => 2, 'deuterium' => 0, 'energy' => 8, 'factor' => 2],
+	11103 => ['metal' => 20000, 'crystal' => 25000, 'deuterium' => 10000, 'energy' => 0, 'factor' => 2],
+	11104 => ['metal' => 5000, 'crystal' => 3200, 'deuterium' => 1500, 'energy' => 0, 'population' => 20000000, 'factor' => 2],
+	11105 => ['metal' => 50000, 'crystal' => 40000, 'deuterium' => 50000, 'energy' => 0, 'population' => 100000000, 'factor' => 2],
+	11106 => ['metal' => 9000, 'crystal' => 6000, 'deuterium' => 3000, 'energy' => 0, 'factor' => 2],
+	11107 => ['metal' => 25000, 'crystal' => 13000, 'deuterium' => 7000, 'energy' => 0, 'factor' => 2],
+	11108 => ['metal' => 50000, 'crystal' => 25000, 'deuterium' => 15000, 'energy' => 0, 'factor' => 2],
+	11109 => ['metal' => 75000, 'crystal' => 20000, 'deuterium' => 25000, 'energy' => 0, 'factor' => 2],
+	11110 => ['metal' => 150000, 'crystal' => 30000, 'deuterium' => 15000, 'energy' => 0, 'factor' => 2],
+	11111 => ['metal' => 80000, 'crystal' => 35000, 'deuterium' => 60000, 'energy' => 50, 'factor' => 5],
+	11112 => ['metal' => 250000, 'crystal' => 125000, 'deuterium' => 125000, 'energy' => 0, 'factor' => 2],
 ];
 
 $CombatCaps = [
@@ -262,11 +297,12 @@ $ProdGrid = [
 // new ogame
 $reslist['resources'] = [1, 2, 3, 4, 12, 22, 23, 24];
 $reslist['facilities'] = [14, 15, 21, 31, 33, 34, 36, 41, 42, 43, 44];
+$reslist['lifeforms'] = [11101, 11102, 11103, 11104, 11105, 11106, 11107, 11108, 11109, 11110, 11111, 11112];
 $reslist['defenses'] = [401, 402, 403, 404, 405, 406, 407, 408];
 $reslist['missiles'] = [502, 503];
 
 // old ogame
-$reslist['build'] = [1, 2, 3, 4, 12, 14, 15, 21, 22, 23, 24, 31, 33, 34, 36, 41, 42, 43, 44];
+$reslist['build'] = [1, 2, 3, 4, 12, 14, 15, 21, 22, 23, 24, 31, 33, 34, 36, 41, 42, 43, 44, 11101, 11102, 11103, 11104, 11105, 11106, 11107, 11108, 11109, 11110, 11111, 11112];
 $reslist['tech'] = [106, 108, 109, 110, 111, 113, 114, 115, 117, 118, 120, 121, 122, 123, 124, 199];
 $reslist['fleet'] = [202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215];
 $reslist['defense'] = [401, 402, 403, 404, 405, 406, 407, 408, 502, 503];

@@ -74,4 +74,18 @@ abstract class ObjectsClassesEnumerator
 	// missiles
     public const defense_anti_ballistic_missile = 'missileInterceptor';
     public const defense_interplanetary_missile = 'missileInterplanetary';
+
+	// life forms
+	public const building_lifeform_tech11101 = 'lifeformTech11101';
+	public const building_lifeform_tech11102 = 'lifeformTech11102';
+	public const building_lifeform_tech11103 = 'lifeformTech11103';
+	public const building_lifeform_tech11104 = 'lifeformTech11104';
+	public const building_lifeform_tech11105 = 'lifeformTech11105';
+	public const building_lifeform_tech11106 = 'lifeformTech11106';
+	public const building_lifeform_tech11107 = 'lifeformTech11107';
+	public const building_lifeform_tech11108 = 'lifeformTech11108';
+	public const building_lifeform_tech11109 = 'lifeformTech11109';
+	public const building_lifeform_tech11110 = 'lifeformTech11110';
+	public const building_lifeform_tech11111 = 'lifeformTech11111';
+	public const building_lifeform_tech11112 = 'lifeformTech11112';
 }
